@@ -1,0 +1,57 @@
+# Core Dependencies
+python-dotenv==1.0.0
+pandas==2.0.3
+numpy==1.24.3
+requests==2.31.0
+
+# Data Fetching
+yfinance==0.2.32
+alpaca-trade-api==3.2.0
+alpaca-py==0.20.0
+yahooquery==2.3.3
+
+# Technical Analysis
+ta-lib==0.4.28
+pandas-ta==0.3.14b0
+
+# Backtesting
+backtrader==1.9.94.122
+bt==0.2.3
+
+# Database
+SQLAlchemy==2.0.19
+alembic==1.11.1
+psycopg2-binary==2.9.6
+
+# Web Framework (optional for UI)
+fastapi==0.100.0
+uvicorn==0.23.2
+pydantic==2.0.3
+
+# Alerts & Notifications
+scipy==1.11.1
+email-validator==2.0.0
+twilio==8.10.0
+
+# News & Sentiment
+newsapi==0.1.1
+praw==7.7.0
+tweepy==4.14.0
+sentencepiece==0.1.99
+transformers==4.33.0
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
+pyaml==23.9.7
+click==8.1.7
+tqdm==4.66.1
+colorama==0.4.6
+
+# Development
+pytest==7.4.0
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+black==23.9.1
+flake8==6.0.0
+mypy==1.5.1
