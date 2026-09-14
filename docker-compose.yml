@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # FastAPI Web Server
+  api:
+    build: .
+    container_name: episodic-pivot-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data/episodic_pivot.db
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_SECRET_KEY=${ALPACA_SECRET_KEY}
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - SMTP_EMAIL=${SMTP_EMAIL}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    command: python run_api.py
+    networks:
+      - episodic-network
+
+  # CLI Scanner (optional, for continuous scanning)
+  scanner:
+    build: .
+    container_name: episodic-pivot-scanner
+    environment:
+      - DATABASE_URL=sqlite:///./data/episodic_pivot.db
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_SECRET_KEY=${ALPACA_SECRET_KEY}
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - SCAN_INTERVAL_SECONDS=60
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    command: python run_orchestrator.py
+    networks:
+      - episodic-network
+    profiles:
+      - scanner
+
+  # PostgreSQL Database (optional, for production)
+  postgres:
+    image: postgres:15-alpine
+    container_name: episodic-pivot-db
+    environment:
+      - POSTGRES_USER=episodic
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-episodic_password}
+      - POSTGRES_DB=episodic_pivot
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - episodic-network
+    profiles:
+      - postgres
+
+networks:
+  episodic-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
